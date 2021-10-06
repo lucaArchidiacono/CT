@@ -4,6 +4,8 @@ Component: ARM Compiler 6.16 Tool: armlink [5dfeaa00]
 
 Section Cross References
 
+    main.o(.text.main) refers to utils_ctboard.o(.text.read_word) for read_word
+    main.o(.text.main) refers to utils_ctboard.o(.text.write_word) for write_word
     main.o(.text.main) refers to utils_ctboard.o(.text.read_byte) for read_byte
     main.o(.text.main) refers to utils_ctboard.o(.text.write_byte) for write_byte
     main.o(.ARM.exidx.text.main) refers to main.o(.text.main) for [Anonymous Symbol]
@@ -125,14 +127,12 @@ Removing Unused input sections from the image.
     Removing utils_ctboard.o(.ARM.exidx.text.read_byte), (8 bytes).
     Removing utils_ctboard.o(.text.read_halfword), (4 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.read_halfword), (8 bytes).
-    Removing utils_ctboard.o(.text.read_word), (4 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.read_word), (8 bytes).
     Removing utils_ctboard.o(.text.read_doubleword), (8 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.read_doubleword), (8 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.write_byte), (8 bytes).
     Removing utils_ctboard.o(.text.write_halfword), (4 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.write_halfword), (8 bytes).
-    Removing utils_ctboard.o(.text.write_word), (4 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.write_word), (8 bytes).
     Removing utils_ctboard.o(.text.write_doubleword), (4 bytes).
     Removing utils_ctboard.o(.ARM.exidx.text.write_doubleword), (8 bytes).
@@ -205,7 +205,7 @@ Removing Unused input sections from the image.
     Removing hal_rcc.o(.ARM.exidx.text.hal_rcc_setup_pll), (8 bytes).
     Removing hal_rcc.o(.ARM.exidx.text.hal_rcc_setup_clock), (8 bytes).
 
-86 unused section(s) (total 3628 bytes) removed from the image.
+84 unused section(s) (total 3620 bytes) removed from the image.
 
 ==============================================================================
 
@@ -314,12 +314,14 @@ Image Symbol Table
     __arm_cp.2_0                             0x08000880   Number         4  hal_gpio.o(.text.intercept_overwrite_register)
     __arm_cp.2_1                             0x08000884   Number         4  hal_gpio.o(.text.intercept_overwrite_register)
     [Anonymous Symbol]                       0x08000888   Section        0  main.o(.text.main)
-    __arm_cp.0_0                             0x0800089c   Number         4  main.o(.text.main)
-    __arm_cp.0_1                             0x080008a0   Number         4  main.o(.text.main)
-    [Anonymous Symbol]                       0x080008a4   Section        0  utils_ctboard.o(.text.read_byte)
-    [Anonymous Symbol]                       0x080008a8   Section        0  system_ctboard.o(.text.system_enter_run)
-    [Anonymous Symbol]                       0x080008b4   Section        0  utils_ctboard.o(.text.write_byte)
-    .text_divfast                            0x080008b8   Section      502  aeabi_sdivfast.o(.text_divfast)
+    __arm_cp.0_0                             0x080008b4   Number         4  main.o(.text.main)
+    __arm_cp.0_1                             0x080008b8   Number         4  main.o(.text.main)
+    [Anonymous Symbol]                       0x080008cc   Section        0  utils_ctboard.o(.text.read_byte)
+    [Anonymous Symbol]                       0x080008d0   Section        0  utils_ctboard.o(.text.read_word)
+    [Anonymous Symbol]                       0x080008d4   Section        0  system_ctboard.o(.text.system_enter_run)
+    [Anonymous Symbol]                       0x080008e0   Section        0  utils_ctboard.o(.text.write_byte)
+    [Anonymous Symbol]                       0x080008e4   Section        0  utils_ctboard.o(.text.write_word)
+    .text_divfast                            0x080008e8   Section      502  aeabi_sdivfast.o(.text_divfast)
     STACK                                    0x20000000   Section     8192  startup_ctboard.o(STACK)
     __initial_sp                             0x20002000   Data           0  startup_ctboard.o(STACK)
 
@@ -448,13 +450,15 @@ Image Symbol Table
     hal_rcc_set_osc                          0x0800057d   Thumb Code   108  hal_rcc.o(.text.hal_rcc_set_osc)
     hal_rcc_setup_clock                      0x080005f1   Thumb Code    92  hal_rcc.o(.text.hal_rcc_setup_clock)
     hal_rcc_setup_pll                        0x08000655   Thumb Code   196  hal_rcc.o(.text.hal_rcc_setup_pll)
-    main                                     0x08000889   Thumb Code    20  main.o(.text.main)
-    read_byte                                0x080008a5   Thumb Code     4  utils_ctboard.o(.text.read_byte)
-    system_enter_run                         0x080008a9   Thumb Code    12  system_ctboard.o(.text.system_enter_run)
-    write_byte                               0x080008b5   Thumb Code     4  utils_ctboard.o(.text.write_byte)
-    __aeabi_uidiv                            0x080008b9   Thumb Code    68  aeabi_sdivfast.o(.text_divfast)
-    __aeabi_idiv                             0x080008fd   Thumb Code   434  aeabi_sdivfast.o(.text_divfast)
-    Image$$RO$$Limit                         0x08000ab0   Number         0  anon$$obj.o ABSOLUTE
+    main                                     0x08000889   Thumb Code    44  main.o(.text.main)
+    read_byte                                0x080008cd   Thumb Code     4  utils_ctboard.o(.text.read_byte)
+    read_word                                0x080008d1   Thumb Code     4  utils_ctboard.o(.text.read_word)
+    system_enter_run                         0x080008d5   Thumb Code    12  system_ctboard.o(.text.system_enter_run)
+    write_byte                               0x080008e1   Thumb Code     4  utils_ctboard.o(.text.write_byte)
+    write_word                               0x080008e5   Thumb Code     4  utils_ctboard.o(.text.write_word)
+    __aeabi_uidiv                            0x080008e9   Thumb Code    68  aeabi_sdivfast.o(.text_divfast)
+    __aeabi_idiv                             0x0800092d   Thumb Code   434  aeabi_sdivfast.o(.text_divfast)
+    Image$$RO$$Limit                         0x08000ae0   Number         0  anon$$obj.o ABSOLUTE
     Image$$RW$$Base                          0x20000000   Number         0  anon$$obj.o ABSOLUTE
     Image$$ZI$$Base                          0x20000000   Number         0  anon$$obj.o ABSOLUTE
     Stack_Mem                                0x20000000   Data        8192  startup_ctboard.o(STACK)
@@ -468,47 +472,49 @@ Memory Map of the image
 
   Image Entry point : 0x08000229
 
-  Load Region LR_1 (Base: 0x08000000, Size: 0x00000ab0, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x08000000, Size: 0x00000ae0, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000ab0, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000ae0, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x08000000   0x08000000   0x000001ac   Data   RO           42    RESET               startup_ctboard.o
-    0x080001ac   0x080001ac   0x0000007c   Code   RO           34    .text               datainit_ctboard.o
-    0x08000228   0x08000228   0x00000024   Code   RO           43  * .text               startup_ctboard.o
-    0x0800024c   0x0800024c   0x00000008   Code   RO           48    .text.__system      system_ctboard.o
-    0x08000254   0x08000254   0x00000056   Code   RO           88    .text.create_pattern_mask  hal_gpio.o
+    0x08000000   0x08000000   0x000001ac   Data   RO           43    RESET               startup_ctboard.o
+    0x080001ac   0x080001ac   0x0000007c   Code   RO           35    .text               datainit_ctboard.o
+    0x08000228   0x08000228   0x00000024   Code   RO           44  * .text               startup_ctboard.o
+    0x0800024c   0x0800024c   0x00000008   Code   RO           49    .text.__system      system_ctboard.o
+    0x08000254   0x08000254   0x00000056   Code   RO           89    .text.create_pattern_mask  hal_gpio.o
     0x080002aa   0x080002aa   0x00000002   PAD
-    0x080002ac   0x080002ac   0x00000140   Code   RO           72    .text.hal_fmc_init_sram  hal_fmc.o
-    0x080003ec   0x080003ec   0x00000086   Code   RO           94    .text.hal_gpio_init_alternate  hal_gpio.o
-    0x08000472   0x08000472   0x00000080   Code   RO           92    .text.hal_gpio_init_output  hal_gpio.o
-    0x080004f2   0x080004f2   0x00000004   Code   RO          134    .text.hal_pwr_set_overdrive  hal_pwr.o
+    0x080002ac   0x080002ac   0x00000140   Code   RO           73    .text.hal_fmc_init_sram  hal_fmc.o
+    0x080003ec   0x080003ec   0x00000086   Code   RO           95    .text.hal_gpio_init_alternate  hal_gpio.o
+    0x08000472   0x08000472   0x00000080   Code   RO           93    .text.hal_gpio_init_output  hal_gpio.o
+    0x080004f2   0x080004f2   0x00000004   Code   RO          135    .text.hal_pwr_set_overdrive  hal_pwr.o
     0x080004f6   0x080004f6   0x00000002   PAD
-    0x080004f8   0x080004f8   0x00000084   Code   RO          146    .text.hal_rcc_reset  hal_rcc.o
-    0x0800057c   0x0800057c   0x00000074   Code   RO          150    .text.hal_rcc_set_osc  hal_rcc.o
-    0x080005f0   0x080005f0   0x00000064   Code   RO          154    .text.hal_rcc_setup_clock  hal_rcc.o
-    0x08000654   0x08000654   0x000000dc   Code   RO          152    .text.hal_rcc_setup_pll  hal_rcc.o
-    0x08000730   0x08000730   0x000000bc   Code   RO           54    .text.init_FMC_SRAM  system_ctboard.o
-    0x080007ec   0x080007ec   0x00000080   Code   RO           52    .text.init_SystemClock  system_ctboard.o
-    0x0800086c   0x0800086c   0x0000001c   Code   RO           86    .text.intercept_overwrite_register  hal_gpio.o
-    0x08000888   0x08000888   0x0000001c   Code   RO            2    .text.main          main.o
-    0x080008a4   0x080008a4   0x00000004   Code   RO           11    .text.read_byte     utils_ctboard.o
-    0x080008a8   0x080008a8   0x0000000c   Code   RO           50    .text.system_enter_run  system_ctboard.o
-    0x080008b4   0x080008b4   0x00000004   Code   RO           19    .text.write_byte    utils_ctboard.o
-    0x080008b8   0x080008b8   0x000001f6   Code   RO          166    .text_divfast       c_p.l(aeabi_sdivfast.o)
+    0x080004f8   0x080004f8   0x00000084   Code   RO          147    .text.hal_rcc_reset  hal_rcc.o
+    0x0800057c   0x0800057c   0x00000074   Code   RO          151    .text.hal_rcc_set_osc  hal_rcc.o
+    0x080005f0   0x080005f0   0x00000064   Code   RO          155    .text.hal_rcc_setup_clock  hal_rcc.o
+    0x08000654   0x08000654   0x000000dc   Code   RO          153    .text.hal_rcc_setup_pll  hal_rcc.o
+    0x08000730   0x08000730   0x000000bc   Code   RO           55    .text.init_FMC_SRAM  system_ctboard.o
+    0x080007ec   0x080007ec   0x00000080   Code   RO           53    .text.init_SystemClock  system_ctboard.o
+    0x0800086c   0x0800086c   0x0000001c   Code   RO           87    .text.intercept_overwrite_register  hal_gpio.o
+    0x08000888   0x08000888   0x00000044   Code   RO            2    .text.main          main.o
+    0x080008cc   0x080008cc   0x00000004   Code   RO           12    .text.read_byte     utils_ctboard.o
+    0x080008d0   0x080008d0   0x00000004   Code   RO           16    .text.read_word     utils_ctboard.o
+    0x080008d4   0x080008d4   0x0000000c   Code   RO           51    .text.system_enter_run  system_ctboard.o
+    0x080008e0   0x080008e0   0x00000004   Code   RO           20    .text.write_byte    utils_ctboard.o
+    0x080008e4   0x080008e4   0x00000004   Code   RO           24    .text.write_word    utils_ctboard.o
+    0x080008e8   0x080008e8   0x000001f6   Code   RO          167    .text_divfast       c_p.l(aeabi_sdivfast.o)
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000ab0, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000ae0, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08000ab0, Size: 0x00002000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08000ae0, Size: 0x00002000, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000        -       0x00002000   Zero   RW           40    STACK               startup_ctboard.o
+    0x20000000        -       0x00002000   Zero   RW           41    STACK               startup_ctboard.o
 
 
 ==============================================================================
@@ -523,13 +529,13 @@ Image component sizes
        376          8          0          0          0       9417   hal_gpio.o
          4          0          0          0          0       2381   hal_pwr.o
        568         68          0          0          0       5406   hal_rcc.o
-        28          8          0          0          0        564   main.o
+        68         24          0          0          0        819   main.o
         36          8        428          0       8192        848   startup_ctboard.o
        336         80          0          0          0       7017   system_ctboard.o
-         8          0          0          0          0       2036   utils_ctboard.o
+        16          0          0          0          0       2036   utils_ctboard.o
 
     ----------------------------------------------------------------------
-      1804        230        428          0       8192      32570   Object Totals
+      1852        246        428          0       8192      32825   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          4          0          0          0          0          0   (incl. Padding)
 
@@ -559,15 +565,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      2308        230        428          0       8192      32438   Grand Totals
-      2308        230        428          0       8192      32438   ELF Image Totals
-      2308        230        428          0          0          0   ROM Totals
+      2356        246        428          0       8192      32693   Grand Totals
+      2356        246        428          0       8192      32693   ELF Image Totals
+      2356        246        428          0          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 2736 (   2.67kB)
+    Total RO  Size (Code + RO Data)                 2784 (   2.72kB)
     Total RW  Size (RW Data + ZI Data)              8192 (   8.00kB)
-    Total ROM Size (Code + RO Data + RW Data)       2736 (   2.67kB)
+    Total ROM Size (Code + RO Data + RW Data)       2784 (   2.72kB)
 
 ==============================================================================
 
