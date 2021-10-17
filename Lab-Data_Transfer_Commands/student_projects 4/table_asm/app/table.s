@@ -37,7 +37,7 @@ BITMASK_LOWER_NIBBLE        EQU     0x0F
         AREA MyAsmVar, DATA, READWRITE
 ; STUDENTS: To be programmed
 
-
+store_table	SPACE 16
 
 
 ; END: To be programmed
@@ -55,9 +55,49 @@ readInput
         BL    waitForKey                    ; wait for key to be pressed and released
 ; STUDENTS: To be programmed
 
-
-
-
+		;loads address of ADDR_DIP_SWITCH_7_0 into register R1
+		LDR		R1, =ADDR_DIP_SWITCH_7_0
+		;unsigned Byte (Zero extend to 32 bits on loads.)
+		LDRB	R0, [R1]
+		;loads address of ADDR_DIP_SWITCH_15_8 into register R5
+		LDR		R5, =ADDR_DIP_SWITCH_15_8
+		;unsigned Byte (Zero extend to 32 bits on loads.)
+		LDRB    R6, [R5]
+		
+		;AND operiere die gestorten values von den ADDR_DIP_SWITCH_15_8 welche sich im Register R6 befinden
+		LDR 	R2, =BITMASK_LOWER_NIBBLE
+		ANDS 	R6, R6, R2
+		
+		;loads address of ADDR_LED_7_0 into register R3
+		LDR     R3, =ADDR_LED_7_0
+		;stores the unsigned byte from R3 into R0
+		STRB 	R0, [R3]
+		;loads address of ADDR_LED_15_8 into register R3
+        LDR     R7, =ADDR_LED_15_8
+		;stores the unsigned byte from R7 into R6
+		STRB 	R6, [R7]
+		
+		
+		LDR		R4, =store_table
+		STRB	R0, [R4, R6]
+		
+		
+		
+		LDR		R1, =ADDR_DIP_SWITCH_31_24
+		LDRB    R0, [R1]
+		
+		LDR 	R2, =BITMASK_LOWER_NIBBLE
+		ANDS 	R0, R0, R2
+		
+        LDR     R3, =ADDR_LED_31_24
+		STRB 	R0, [R3]
+		
+        LDR     R4, =store_table
+		STRB    R6, [R4, R0]
+		
+        LDR     R5, =ADDR_LED_23_16
+		STRB 	R6, [R5]
+		
 ; END: To be programmed
         B       readInput
         ALIGN
