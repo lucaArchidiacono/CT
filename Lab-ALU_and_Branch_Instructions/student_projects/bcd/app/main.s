@@ -73,7 +73,7 @@ main    PROC
 		; If Button T0 was pressed set background and go to shift_add branch.
 		LDR		R6, =ADDR_LCD_BLUE
 		LDR		R7, =ADDR_LCD_RED
-		BNE		shift_add
+		BNE		shift_add					; Branch if Z-Flag is == 0
 
 multiply
 		LDR		R3, =HEX_TEN
@@ -105,12 +105,46 @@ shift_add
 end_branch
 		; Show BCD
 		LDR 	R1, =ADDR_7_SEG_BIN_DS3_0
-		STRB    R2, [R1]                    ; Display value of R2 on 7-seg display R0 (DS1, DS0)
-        STRB 	R5, [R1, #1]				; Display value of R5 on 7-seg display R0 with offset (DS3, DS2)
+		STRB    R2, [R1]                    ; Display value of R2 on 7-seg display R1 (DS1, DS0)
+        STRB 	R5, [R1, #1]				; Display value of R5 on 7-seg display R1 with offset (DS3, DS2)
 		
 		LDR 	R1, =ADDR_LED_15_0
         STRB 	R2, [R1]					; Display value of R2 in LED_7_0
         STRB 	R5, [R1, #1]				; Display value of R5 in LED_15_8
+		
+		
+		; initialise width of rotation bar before do-while loop
+		MOVS	R0, #0						; 0000 0000 -> will be used to count the 1's in R5. After every shift to the right and carry = 1 this R0 will get +1 on the far right side.
+		MOVS 	R1, #7						; 0000 0111 == 7 -> is the counter which will be counted down --1
+		
+start_width_loop
+		LSRS	R5, R5, #1					; Shift from left to right and additionaly check if there will be a carry flag set to 1 or not
+		BCC 	end_width_loop				; If C-Flag is == 0 then go to label "inside_loop"
+		
+		; Execution continues here if C-Flag != 0
+		LSLS	R0, #1						; Shfit all the 1 on the far right side one step left, to make place for the upcoming 1
+		ADDS	R0, R0, #1					; Adds 1 on the far right. This indicates another 1 was found in R5 (BCD)
+
+end_width_loop
+		SUBS	R1, #1
+		BNE		start_width_loop			; If Z == 0 then go to label "start_loop"
+		
+		; Execution continues here if Z-Flag != 0
+		LSLS	R6, R0, #16					; Shifts the width-block to the left with Offset 16 (in this case this will be not seen in the beginning on the LED. because it's outside the range 0-15). 
+											; E.g. R0 = 1111. Then we shift this value with offset 16 -> 1111 0000 0000 0000 0000
+		ORRS	R6, R6, R0					; Combines the far left width-block with the far right widt-block -> 1111 0000 0000 0000 0000 OR 1111 == 1111 0000 0000 0000 1111
+		MOVS	R0, R6						; Copies this new value to R0
+		
+rotate_full
+		LDR		R4, =ADDR_LED_31_16
+		STRH	R0, [R4]
+		
+		MOVS	R4, #1
+		RORS	R0, R0, R4					; Rotate the value right by 1. E.g. starting with = 1111 0000 0000 0000 1111 then rotate right 1 -> 1111 1000 0000 0000 0111.
+		BL	pause
+		CMP		R0, R6						; Compare the both values R0 and R6. If R0 is less or equal to R6 then jump to label "rotate_full"
+		BNE rotate_full
+		
 
 ; END: To be programmed
 
