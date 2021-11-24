@@ -118,9 +118,9 @@ Image Symbol Table
     .text                                    0x08000dd8   Section        0  hal_rcc.o(.text)
     .text                                    0x080011dc   Section      346  aeabi_sdiv.o(.text)
     i.__ARM_common_switch8                   0x08001336   Section        0  hal_rcc.o(i.__ARM_common_switch8)
-    myCode                                   0x08001354   Section      200  struct_code.o(myCode)
-    myConstants                              0x0800141c   Section        8  struct_code.o(myConstants)
-    DISPLAY_BIT                              0x0800141c   Data           4  struct_code.o(myConstants)
+    myCode                                   0x08001354   Section      268  struct_code.o(myCode)
+    myConstants                              0x08001460   Section        8  struct_code.o(myConstants)
+    DISPLAY_BIT                              0x08001460   Data           4  struct_code.o(myConstants)
     STACK                                    0x20000000   Section     8192  startup_ctboard.o(STACK)
     __initial_sp                             0x20002000   Data           0  startup_ctboard.o(STACK)
 
@@ -282,8 +282,8 @@ Image Symbol Table
     __aeabi_idiv                             0x080011f1   Thumb Code     0  aeabi_sdiv.o(.text)
     __aeabi_idivmod                          0x080011f1   Thumb Code   326  aeabi_sdiv.o(.text)
     __ARM_common_switch8                     0x08001337   Thumb Code    28  hal_rcc.o(i.__ARM_common_switch8)
-    main                                     0x08001355   Thumb Code   158  struct_code.o(myCode)
-    Image$$RO$$Limit                         0x08001424   Number         0  anon$$obj.o ABSOLUTE
+    main                                     0x08001355   Thumb Code   224  struct_code.o(myCode)
+    Image$$RO$$Limit                         0x08001468   Number         0  anon$$obj.o ABSOLUTE
     Image$$RW$$Base                          0x20000000   Number         0  anon$$obj.o ABSOLUTE
     Image$$ZI$$Base                          0x20000000   Number         0  anon$$obj.o ABSOLUTE
     Stack_Mem                                0x20000000   Data        8192  startup_ctboard.o(STACK)
@@ -297,9 +297,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000309
 
-  Load Region LR_1 (Base: 0x08000000, Size: 0x00001424, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x08000000, Size: 0x00001468, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001424, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001468, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -316,16 +316,16 @@ Memory Map of the image
     0x080011dc   0x080011dc   0x0000015a   Code   RO          130    .text               c_p.l(aeabi_sdiv.o)
     0x08001336   0x08001336   0x0000001c   Code   RO          119    i.__ARM_common_switch8  hal_rcc.o
     0x08001352   0x08001352   0x00000002   PAD
-    0x08001354   0x08001354   0x000000c8   Code   RO           22  * myCode              struct_code.o
-    0x0800141c   0x0800141c   0x00000008   Data   RO           21    myConstants         struct_code.o
+    0x08001354   0x08001354   0x0000010c   Code   RO           22  * myCode              struct_code.o
+    0x08001460   0x08001460   0x00000008   Data   RO           21    myConstants         struct_code.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08001424, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08001468, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08001424, Size: 0x00002000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08001468, Size: 0x00002000, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -346,11 +346,11 @@ Image component sizes
        232          4          0          0          0       1832   hal_pwr.o
       1056         66          0          0          0       2993   hal_rcc.o
         36          8        428          0       8192        872   startup_ctboard.o
-       200         42          8          0          0        484   struct_code.o
+       268         44          8          0          0        516   struct_code.o
        528         44          0          0          0       7990   system_ctboard.o
 
     ----------------------------------------------------------------------
-      4318        296        436          0       8192      59560   Object Totals
+      4386        298        436          0       8192      59592   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          2          0          0          0          0          0   (incl. Padding)
 
@@ -381,15 +381,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      4720        296        436          0       8192      59028   Grand Totals
-      4720        296        436          0       8192      59028   ELF Image Totals
-      4720        296        436          0          0          0   ROM Totals
+      4788        298        436          0       8192      59060   Grand Totals
+      4788        298        436          0       8192      59060   ELF Image Totals
+      4788        298        436          0          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5156 (   5.04kB)
+    Total RO  Size (Code + RO Data)                 5224 (   5.10kB)
     Total RW  Size (RW Data + ZI Data)              8192 (   8.00kB)
-    Total ROM Size (Code + RO Data + RW Data)       5156 (   5.04kB)
+    Total ROM Size (Code + RO Data + RW Data)       5224 (   5.10kB)
 
 ==============================================================================
 

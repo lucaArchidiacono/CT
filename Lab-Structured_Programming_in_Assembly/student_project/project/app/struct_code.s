@@ -121,10 +121,11 @@ t0_not_pressed
 		LDR		R1, =ADDR_DIP_SWITCH_7_0
 		LDR		R2, [R1]
 		
+		; calculate the difference between DIP_SWITCH(R2) - ADC(R0) = (R2)
 		SUBS	R2, R2, R0
 		
 		LDR		R3, =ADDR_7_SEG_BIN_DS3_0
-		STR		R2, [R3]
+		STR		R2, [R3]							; store the difference inside the SEG_BIN_DS3_0
 		
 		SUBS	R2, #0x00
 		BGE 	set_lcd_blue						; When R2 >= 0x00 then go to set_lcd_blue
@@ -142,23 +143,77 @@ set_lcd_green
 		STRH		R1, [R0, #DISPLAY_COLOUR_BLUE]
 		B			main_loop
 set_lcd_blue
+		PUSH		{ R0, R1, R2 }
+		
 		LDR			R0, =ADDR_LCD_COLOUR
 		LDR			R1, =0x0000
 		LDR			R2, =0xFFFF
 		STRH		R1, [R0, #DISPLAY_COLOUR_RED]
 		STRH		R1, [R0, #DISPLAY_COLOUR_GREEN]
 		STRH		R2, [R0, #DISPLAY_COLOUR_BLUE]
+		
+		POP			{ R0, R1, R2 }
+		
+		PUSH		{ R2 }
+		SUBS		R2, #4
+		BLO			lower_4							; if R2 < 4 then go to lower_4
+		POP			{ R2 }
+		SUBS		R2, #16
+		BLO			lower_16						; if R2 < 16 then go to lower_16
+lower_others
+		MOVS		R2, #8
+		B			display_bit
+lower_4
+		MOVS		R2, #2
+		B			display_bit
+lower_16
+		MOVS		R2, #4
+		B			display_bit
+
+display_bit
+		ADDS 		R2, #0x30						; add offset for ASCII presentation
+		
+		; display on LCD display
+		LDR 		R7, =ADDR_LCD_ASCII
+		STR 		R2, [R7]
+		BL 			write_bit_ascii
+		
 		B			main_loop
+
 set_lcd_red
+		PUSH		{ R0, R1, R2 }
+		
 		LDR			R0, =ADDR_LCD_COLOUR
 		LDR			R1, =0x0000
 		LDR			R2, =0xFFFF
 		STRH		R2, [R0, #DISPLAY_COLOUR_RED]
 		STRH		R1, [R0, #DISPLAY_COLOUR_GREEN]
 		STRH		R1, [R0, #DISPLAY_COLOUR_BLUE]
+		
+		POP			{ R0, R1, R2 }
+		
+		PUSH		{ R0, R1, R2 }
+		
+		MOVS		R6, #0							; zero counter
+		MOVS		R7, #8							; general loop counter. e.g. i
+start_loop
+		LSRS		R2, #1
+		BCS			end_loop						; if C-Flag is != 0 then go to "end_loop"
+		
+		ADDS		R6, #1
+end_loop
+		SUBS 		R7, #1							; reduce "for loop counter"
+		BNE			start_loop						; If Z == 0 then go to label "start_loop"
+		
+		ADDS 		R6, #0x30						; add offset for ASCII presentation
+		
+		; display on LCD display 2nd line
+		LDR 		R7, =ADDR_LCD_ASCII_2ND_LINE
+		STR 		R6, [R7]
+		
+		POP 		{ R0, R1, R2 }
 		B			main_loop
 		
-
 clear_lcd
         PUSH       {R0, R1, R2}
         LDR        R2, =0x0
