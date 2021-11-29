@@ -38,7 +38,7 @@ search_max      PROC
 				PUSH 	{ R2, R3, R4, R5, LR }
 				
 				; Counter fuer die Tabellenlaenge
-				LDR		R2, =-1
+				LDR		R2, =0
 				; Wert falls Tabellenlaenge = 0 ist
 				LDR		R3, =0x80000000
 				
@@ -51,11 +51,13 @@ loop_start
 				LDR 	R4, [R0, R4]
 				
 				CMP		R4, R3
-				BLT 	loop_cond
-				MOVS	R3, R4
+				BLT 	increase_counter			; If R4 < R3 then branch to increase_counter
+				MOVS	R3, R4						; If R4 >= R3 then save this value in R3
+
+increase_counter
+				ADDS	R2, #1
 
 loop_cond
-				ADDS	R2, #1
 				CMP		R2, R1
 				BNE		loop_start
 				
