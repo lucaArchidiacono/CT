@@ -27,8 +27,19 @@ static uint8_t nr_of_throws[NR_OF_DICE_VALUES + 1];
 /* function definitions */
 
 /// STUDENTS: To be programmed
+void stat_add_throw(uint8_t throw_value)
+{
+		nr_of_throws[0] += 1;
+		nr_of_throws[throw_value] += 1;
+}
 
-
-
+uint8_t stat_read(uint8_t dice_number)
+{
+	if ((dice_number < 0) || (dice_number > NR_OF_DICE_VALUES)) 
+	{
+		return ERROR_VALUE;
+	}
+		return nr_of_throws[dice_number];
+}
 
 /// END: To be programmed
